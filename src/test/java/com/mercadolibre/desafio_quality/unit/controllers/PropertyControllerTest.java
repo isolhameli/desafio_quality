@@ -1,7 +1,6 @@
 package com.mercadolibre.desafio_quality.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.mercadolibre.desafio_quality.models.District;
 import com.mercadolibre.desafio_quality.models.Room;
 import com.mercadolibre.desafio_quality.requests.PropertyRequest;
@@ -17,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.nio.charset.StandardCharsets;
@@ -203,7 +201,6 @@ public class PropertyControllerTest {
 
         mockMvc.perform(
                 post("/property")
-                        .characterEncoding("utf-8")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -245,7 +242,6 @@ public class PropertyControllerTest {
         //then
         mockMvc.perform(
                 post("/property")
-                        .characterEncoding("utf-8")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -266,7 +262,6 @@ public class PropertyControllerTest {
         //then
         mockMvc.perform(
                 post("/property")
-                        .characterEncoding("utf-8")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
