@@ -1,5 +1,7 @@
 package com.mercadolibre.desafio_quality.exceptions;
 
+import com.mercadolibre.desafio_quality.exceptions.utils.FieldMessage;
+
 import java.util.List;
 
 public class ValidationError {

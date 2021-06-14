@@ -1,4 +1,4 @@
-package com.mercadolibre.desafio_quality.exceptions;
+package com.mercadolibre.desafio_quality.exceptions.utils;
 
 import java.util.List;
 

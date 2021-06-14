@@ -2,7 +2,7 @@ package com.mercadolibre.desafio_quality.services;
 
 import com.mercadolibre.desafio_quality.exceptions.DistrictNotFoundException;
 import com.mercadolibre.desafio_quality.models.District;
-import com.mercadolibre.desafio_quality.unit.repositories.DistrictRepository;
+import com.mercadolibre.desafio_quality.repositories.DistrictRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;

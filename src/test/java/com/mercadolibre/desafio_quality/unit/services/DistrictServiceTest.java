@@ -2,7 +2,7 @@ package com.mercadolibre.desafio_quality.unit.services;
 
 import com.mercadolibre.desafio_quality.exceptions.DistrictNotFoundException;
 import com.mercadolibre.desafio_quality.models.District;
-import com.mercadolibre.desafio_quality.unit.repositories.DistrictRepositoryImpl;
+import com.mercadolibre.desafio_quality.repositories.DistrictRepositoryImpl;
 import com.mercadolibre.desafio_quality.services.DistrictServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

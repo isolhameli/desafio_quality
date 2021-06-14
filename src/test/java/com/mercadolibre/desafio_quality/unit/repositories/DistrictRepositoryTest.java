@@ -1,6 +1,7 @@
 package com.mercadolibre.desafio_quality.unit.repositories;
 
 import com.mercadolibre.desafio_quality.models.District;
+import com.mercadolibre.desafio_quality.repositories.DistrictRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

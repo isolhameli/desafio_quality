@@ -1,6 +1,7 @@
 package com.mercadolibre.desafio_quality.unit.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.mercadolibre.desafio_quality.models.District;
 import com.mercadolibre.desafio_quality.models.Room;
 import com.mercadolibre.desafio_quality.requests.PropertyRequest;
@@ -13,8 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.nio.charset.StandardCharsets;
@@ -113,7 +116,7 @@ public class PropertyControllerTest {
 
     @Test
     void testControllerBehavesWellAfterGettingResultFromService() throws Exception {
-
+        //given
         String payload = "{\n" +
                 "    \"prop_name\":\"Minha casa\",\n" +
                 "    \"prop_district\":\"bairro dos estádos \",\n" +
@@ -146,8 +149,11 @@ public class PropertyControllerTest {
         PropertyResponse expectedResponse = new PropertyResponse(propertyRequest,district,132.5,
                 59625.0,rooms.get(1),rooms);
 
+        //when
         when(propertyService.getPropertyInfo(any())).thenReturn(expectedResponse);
 
+
+        //then
         MvcResult result = mockMvc.perform(
                 post("/property")
                         .content(payload)
@@ -161,6 +167,112 @@ public class PropertyControllerTest {
 
         Assertions.assertEquals(expectedResponse,actualResponse);
 
+    }
+
+    @Test
+    void testControllerHandlesExceptionWhenProvidingWrongDataForRoomsList() throws Exception {
+        //given
+        String payload = "{\n" +
+                "    \"prop_name\":\"Minha casa\",\n" +
+                "    \"prop_district\":\"Bairro dos estádos \",\n" +
+                "    \"rooms\": 1\n" +
+                "}";
+
+        String expectedResult = "{\n" +
+                "    \"status\": 400,\n" +
+                "    \"message\": \"Valor inválido para o campo rooms\",\n" +
+                "    \"params\": [\n" +
+                "        {\n" +
+                "            \"name\": \"rooms[0].room_name\",\n" +
+                "            \"classType\": \"String\",\n" +
+                "            \"required\": true\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"name\": \"rooms[0].room_width\",\n" +
+                "            \"classType\": \"Double\",\n" +
+                "            \"required\": true\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"name\": \"rooms[0].room_length\",\n" +
+                "            \"classType\": \"Double\",\n" +
+                "            \"required\": true\n" +
+                "        }\n" +
+                "    ]}";
+
+        //then
+
+        mockMvc.perform(
+                post("/property")
+                        .characterEncoding("utf-8")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
+                        instanceof HttpMessageNotReadableException))
+                .andExpect(content().json(expectedResult)).andReturn();
+    }
+
+    @Test
+    void testControllerHandlesExceptionWhenProvidingWrongDataForRoomsElement() throws Exception {
+        //given
+        String payload = "{\n" +
+                "    \"prop_name\":\"Minha casa\",\n" +
+                "    \"prop_district\":\"Bairro dos estádos \",\n" +
+                "    \"rooms\": [1]\n" +
+                "}";
+
+        String expectedResult = "{\n" +
+                "    \"status\": 400,\n" +
+                "    \"message\": \"Valor inválido para o campo rooms[0]\",\n" +
+                "    \"params\": [\n" +
+                "        {\n" +
+                "            \"name\": \"rooms[0].room_name\",\n" +
+                "            \"classType\": \"String\",\n" +
+                "            \"required\": true\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"name\": \"rooms[0].room_width\",\n" +
+                "            \"classType\": \"Double\",\n" +
+                "            \"required\": true\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"name\": \"rooms[0].room_length\",\n" +
+                "            \"classType\": \"Double\",\n" +
+                "            \"required\": true\n" +
+                "        }\n" +
+                "    ]}";
+
+        //then
+        mockMvc.perform(
+                post("/property")
+                        .characterEncoding("utf-8")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
+                        instanceof HttpMessageNotReadableException))
+                .andExpect(content().json(expectedResult)).andReturn();
+    }
+
+    @Test
+    void testControllerHandlesExceptionWhenProvidingInvalidJson() throws Exception {
+        //given
+        String payload = "{\"";
+
+        String expectedResult = "{\n" +
+                "    \"message\": \"Corpo inválido\",\n" +
+                "    \"status\": 400}";
+
+        //then
+        mockMvc.perform(
+                post("/property")
+                        .characterEncoding("utf-8")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
+                        instanceof HttpMessageNotReadableException))
+                .andExpect(content().json(expectedResult)).andReturn();
     }
 
 }
