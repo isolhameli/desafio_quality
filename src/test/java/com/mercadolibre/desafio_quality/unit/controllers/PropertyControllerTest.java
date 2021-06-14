@@ -24,7 +24,6 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -113,21 +112,21 @@ public class PropertyControllerTest {
     }
 
     @Test
-    void testControllerBehavesWellAfterGettingResult() throws Exception {
+    void testControllerBehavesWellAfterGettingResultFromService() throws Exception {
 
         String payload = "{\n" +
                 "    \"prop_name\":\"Minha casa\",\n" +
                 "    \"prop_district\":\"bairro dos estádos \",\n" +
                 "    \"rooms\": [\n" +
                 "        {\n" +
-                "            \"room_name\":\"Sala\",\n" +
-                "            \"room_length\":10,\n" +
-                "            \"room_width\":8\n" +
-                "        },\n" +
-                "        {\n" +
                 "            \"room_name\":\"Quarto\",\n" +
                 "            \"room_length\":5,\n" +
                 "            \"room_width\":4\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"room_name\":\"Sala\",\n" +
+                "            \"room_length\":10,\n" +
+                "            \"room_width\":8\n" +
                 "        },\n" +
                 "        {\n" +
                 "            \"room_name\":\"Cozinha\",\n" +
@@ -139,13 +138,13 @@ public class PropertyControllerTest {
 
         PropertyRequest propertyRequest = new ObjectMapper().readValue(payload, PropertyRequest.class);
         List<Room> rooms = new ArrayList<>(List.of(
-                new Room("Sala",10.0,8.0,80.0),
                 new Room("Quarto",5.0,4.0,20.0),
+                new Room("Sala",10.0,8.0,80.0),
                 new Room("Cozinha",5.0,6.5,32.5)
         ));
         District district = new District("BAIRRO DOS ESTADOS", 450.0);
         PropertyResponse expectedResponse = new PropertyResponse(propertyRequest,district,132.5,
-                59625.0,rooms.get(0),rooms);
+                59625.0,rooms.get(1),rooms);
 
         when(propertyService.getPropertyInfo(any())).thenReturn(expectedResponse);
 

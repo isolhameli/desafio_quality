@@ -1,4 +1,4 @@
-package com.mercadolibre.desafio_quality.repositories;
+package com.mercadolibre.desafio_quality.unit.repositories;
 
 import com.mercadolibre.desafio_quality.models.District;
 

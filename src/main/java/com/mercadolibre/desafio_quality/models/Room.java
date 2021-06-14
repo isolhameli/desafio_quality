@@ -5,6 +5,7 @@ import com.mercadolibre.desafio_quality.interfaces.RoomInterface;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
+import java.util.Objects;
 
 public class Room implements RoomInterface {
 
@@ -43,31 +44,28 @@ public class Room implements RoomInterface {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Double getWidth() {
         return width;
-    }
-
-    public void setWidth(Double width) {
-        this.width = width;
     }
 
     public Double getLength() {
         return length;
     }
 
-    public void setLength(Double length) {
-        this.length = length;
-    }
-
     public Double getArea() {
         return area;
     }
 
-    public void setArea(Double area) {
-        this.area = area;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room)) return false;
+        Room room = (Room) o;
+        return Objects.equals(name, room.name) && Objects.equals(width, room.width) && Objects.equals(length, room.length) && Objects.equals(area, room.area);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, width, length, area);
     }
 }

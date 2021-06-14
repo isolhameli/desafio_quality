@@ -1,11 +1,11 @@
 package com.mercadolibre.desafio_quality.services;
 
+import com.mercadolibre.desafio_quality.exceptions.DistrictNotFoundException;
 import com.mercadolibre.desafio_quality.models.District;
-import com.mercadolibre.desafio_quality.repositories.DistrictRepository;
+import com.mercadolibre.desafio_quality.unit.repositories.DistrictRepository;
 import org.springframework.stereotype.Service;
 
 import java.text.Normalizer;
-import java.util.Optional;
 
 @Service
 public class DistrictServiceImpl implements DistrictService{
@@ -16,11 +16,11 @@ public class DistrictServiceImpl implements DistrictService{
         this.districtRepository = districtRepository;
     }
 
-    public Optional<District> findByName(String name){
+    public District findByName(String name){
         name = Normalizer.normalize(name, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "")
                 .toUpperCase()
                 .strip();
-        return districtRepository.findByName(name);
+        return districtRepository.findByName(name).orElseThrow(() -> new DistrictNotFoundException("Distrito não encontrado"));
     }
 }

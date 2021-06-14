@@ -25,7 +25,7 @@ public class PropertyServiceImpl implements PropertyService{
 
         List<Room> rooms = roomService.getRoomsWithArea(propertyRequest.getRooms());
         Double propertyArea = roomService.calculateTotalArea(rooms);
-        District district = findDistrictByName(propertyRequest.getPropertyDistrict());
+        District district = districtService.findByName(propertyRequest.getPropertyDistrict());
         Double propertyPrice = calculatePropertyPrice(propertyArea, district.getPrice());
         Room largestRoom = roomService.getLargestRoom(rooms);
         return new PropertyResponse(propertyRequest, district, propertyArea,propertyPrice,largestRoom,rooms);
@@ -34,12 +34,6 @@ public class PropertyServiceImpl implements PropertyService{
     @Override
     public Double calculatePropertyPrice(Double area, Double price) {
         return price*area;
-    }
-
-    @Override
-    public District findDistrictByName(String districtName) {
-        return districtService.findByName(districtName)
-                .orElseThrow(() -> new DistrictNotFoundException("Distrito não encontrado"));
     }
 
 

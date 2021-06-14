@@ -15,8 +15,8 @@ public class RoomServiceImpl implements RoomService{
     public <T extends RoomInterface> List<Room> getRoomsWithArea(List<T> rooms) {
         return rooms
                 .stream()
-                .map(room -> new Room(room.getName(),room.getLength(),
-                        room.getWidth(), calculateRoomArea(room)))
+                .map(room -> new Room(room.getName(), room.getWidth(),
+                        room.getLength(), calculateRoomArea(room)))
                 .collect(Collectors.toList());
     }
 

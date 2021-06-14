@@ -78,4 +78,43 @@ public class PropertyIntegration {
 
     }
 
+    @Test
+    void testDistrictNotFoundException() throws Exception {
+        String payload = "{\n" +
+                "    \"prop_name\":\"Minha casa\",\n" +
+                "    \"prop_district\":\"bairro não existente \",\n" +
+                "    \"rooms\": [\n" +
+                "        {\n" +
+                "            \"room_name\":\"Sala\",\n" +
+                "            \"room_length\":10,\n" +
+                "            \"room_width\":8\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"room_name\":\"Quarto\",\n" +
+                "            \"room_length\":5,\n" +
+                "            \"room_width\":4\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"room_name\":\"Cozinha\",\n" +
+                "            \"room_length\":5,\n" +
+                "            \"room_width\":6.5\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        String expectedResult = "{\n" +
+                "    \"message\": \"Distrito não encontrado\",\n" +
+                "    \"status\": 404\n"+
+                "}";
+
+        mockMvc.perform(
+                post("/property")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNotFound()).andExpect(content().json(expectedResult));
+    }
+
+
+
+
 }

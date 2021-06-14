@@ -4,6 +4,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
 public class District {
 
@@ -15,6 +16,7 @@ public class District {
     @DecimalMin("0.0")
     private Double price;
 
+    @Deprecated
     public District() {
     }
 
@@ -27,15 +29,21 @@ public class District {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof District)) return false;
+        District district = (District) o;
+        return Objects.equals(name, district.name) && Objects.equals(price, district.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price);
     }
 }
