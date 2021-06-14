@@ -271,4 +271,38 @@ public class PropertyControllerTest {
                 .andExpect(content().json(expectedResult)).andReturn();
     }
 
+    @Test
+    void testErrorWhenRoomsAreEmpty() throws Exception{
+        //given
+        String payload = "{\n" +
+                "    \"prop_name\":\"Minha Casa\",\n" +
+                "    \"prop_district\":\"Bairro dos estádos \",\n" +
+                "    \"rooms\": []\n" +
+                "}";
+
+        String expectedResult = "{\n" +
+                "    \"message\": \"Erro de validação\",\n" +
+                "    \"status\": 400,\n" +
+                "    \"errors\": [\n" +
+                "        {\n" +
+                "            \"fieldName\": \"rooms[0]\",\n" +
+                "            \"errors\": [\n" +
+                "                \"O campo não pode estar vazio\"\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+
+        //then
+        mockMvc.perform(
+                post("/property")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(result -> Assertions.assertTrue(result.getResolvedException()
+                        instanceof MethodArgumentNotValidException))
+                .andExpect(content().json(expectedResult)).andReturn();
+
+    }
+
 }
