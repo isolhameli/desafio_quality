@@ -40,7 +40,7 @@ public class PropertyControllerTest {
 
     @Test
     public void testControllerDTOValidationsAreWorking() throws Exception {
-
+        //given
         String payload = "{\n" +
                 "    \"prop_name\":\"minha casaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n" +
                 "    \"prop_district\":\"Bairro dos estádos \",\n" +
@@ -102,6 +102,7 @@ public class PropertyControllerTest {
                 "    ]\n" +
                 "}";
 
+        //then
         mockMvc.perform(
                 post("/property")
                         .content(payload)

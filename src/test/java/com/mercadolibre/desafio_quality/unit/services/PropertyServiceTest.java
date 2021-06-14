@@ -74,9 +74,9 @@ public class PropertyServiceTest {
     void testGetPropertyInfo(){
         //given
         Double totalArea = 33.5;
-        Double prorpertyPrice = 15075.0;
+        Double propertyPrice = 15075.0;
         PropertyResponse expectedResponse = new PropertyResponse(propertyRequest, district, totalArea,
-                prorpertyPrice, largestRoom, rooms);
+                propertyPrice, largestRoom, rooms);
 
         //when
         when(roomService.getRoomsWithArea(propertyRequest.getRooms())).thenReturn(rooms);
